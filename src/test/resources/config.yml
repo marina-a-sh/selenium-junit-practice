@@ -1,0 +1,10 @@
+browser: chrome      # chrome, firefox, safari, edge, ei
+environment: local   # local, grid
+#hub: http://localhost:4444/wd/hub
+#hub: http://host.docker.internal:4444/wd/hub
+headless: false
+#browserWidth: 1920
+#browserHeight: 1080
+pageLoadTimeOut: 150  # 300 seconds [see https://w3c.github.io/webdriver/#x9-timeouts]
+implicitTimeOut: 3   # 0 seconds
+explicitTimeOut: 10
