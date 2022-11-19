@@ -40,12 +40,11 @@ public class ScreenshotOnFailRule implements TestRule, Loggable {
                 File screenshot = screenshotTaker.getScreenshotAs(OutputType.FILE);
                 try {
                     File dir = new File(System.getProperty("user.dir") + File.separator + "target" +
-                                         File.separator + "artifacts_" +
-                                         DateTimeFormatter.ofPattern("yyyy_MM_dd").format(ZonedDateTime.now()));
+                                                                                  File.separator + "artifacts");
                     boolean directoryCreated = dir.isDirectory() || dir.mkdir();
                     if (directoryCreated) {
-                        File dest = new File(dir + File.separator + description.getMethodName() + "-" +
-                                  DateTimeFormatter.ofPattern("HH:mm:ss").format(ZonedDateTime.now()) + ".png");
+                        File dest = new File(dir + File.separator + description.getClassName()
+                                                                     + "." + description.getMethodName() + ".png");
                         Files.move(screenshot.toPath(), dest.toPath());
                         getLogger().info("Saved screenshot to " + dest.getAbsolutePath());
                     } else {
@@ -53,7 +52,7 @@ public class ScreenshotOnFailRule implements TestRule, Loggable {
                     }
                 } catch (IOException e) {
                     getLogger().error("Screenshot failed after failure in: " + description.getClassName() + "." +
-                                                                          description.getMethodName());
+                                                                               description.getMethodName());
                     e.printStackTrace();
                 }
             }
