@@ -39,6 +39,7 @@ public class ScreenshotOnFailRule implements TestRule, Loggable {
                 TakesScreenshot screenshotTaker = (TakesScreenshot) getDriver();
                 File screenshot = screenshotTaker.getScreenshotAs(OutputType.FILE);
                 try {
+                    // this directory and file names structure is expected in maven site phase for report generation
                     File dir = new File(System.getProperty("user.dir") + File.separator + "target" +
                                                                                   File.separator + "artifacts");
                     boolean directoryCreated = dir.isDirectory() || dir.mkdir();
