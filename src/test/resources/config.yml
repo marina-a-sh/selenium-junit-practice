@@ -1,7 +1,7 @@
 browser: chrome      # chrome, firefox, safari, edge, ei
-environment: local   # local, grid
+environment: grid   # local, grid
 #hub: http://localhost:4444/wd/hub
-#hub: http://host.docker.internal:4444/wd/hub
+hub: http://host.docker.internal:4444/wd/hub
 headless: false
 #browserWidth: 1920
 #browserHeight: 1080

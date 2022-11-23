@@ -26,4 +26,8 @@ public class ElementsStatsTest extends BaseTest {
         }
     }
 
+    @Test
+    public void failingTest() {
+        assertThat(true).isFalse();
+    }
 }
