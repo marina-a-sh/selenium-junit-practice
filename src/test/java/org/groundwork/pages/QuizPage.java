@@ -18,7 +18,7 @@ public class QuizPage extends BasePage {
 
     private String constructUrl(LocalDate date) {
         DateTimeFormatter dateFmt1 = DateTimeFormatter.ofPattern("yyyy/MM", Locale.US);
-        DateTimeFormatter dateFmt2 = DateTimeFormatter.ofPattern("MMMM-dd", Locale.US);
+        DateTimeFormatter dateFmt2 = DateTimeFormatter.ofPattern("MMMM-d", Locale.US);
         return "https://www.cnn.com/interactive/" + dateFmt1.format(date) + "/us/cnn-5-things-news-quiz-"
                                                   + dateFmt2.format(date).toLowerCase() + "-sec/";
     }
@@ -26,9 +26,12 @@ public class QuizPage extends BasePage {
     @FindBy(xpath = "//h1[contains(@class,'heading-xxl')]")
     WebElement heading;
 
-    public boolean checkTitleCorrectForTheDate() {
-        DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.US);
-        return heading.getText().equals("Weekly News Quiz: " + dateFmt.format(quizDate));
+    public String getActualTitle() {
+        return heading.getText();
     }
 
+    public String getExpectedTitle() {
+        DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.US);
+        return "Weekly News Quiz: " + dateFmt.format(quizDate);
+    }
 }

@@ -9,7 +9,7 @@ import static org.groundwork.support.TestContext.getDriver;
 
 public class BasePage {
 
-    protected String url;
+    protected String url = "";
     protected WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(getConfig().getExplicitTimeOut()),
                                                                   Duration.ofMillis(200));
 
@@ -26,4 +26,7 @@ public class BasePage {
                               getDriver()).executeScript("return document.readyState").equals("complete"));
     }
 
+    public String getUrl() {
+        return url;
+    }
 }

@@ -50,17 +50,14 @@ public class CnnFiveThingsSmokeTest extends BaseTest {
 
     private void checkQuizPage(QuizPage quizPage, String parent) {
         Set<String> listOfTabs = getDriver().getWindowHandles();
-        boolean quizPageVisited = false;
         for (String tab : listOfTabs) {
             if (!tab.equalsIgnoreCase(parent)) {
                 getDriver().switchTo().window(tab);
                 quizPage.waitToLoadWithJS();
-                assertThat(quizPage.checkTitleCorrectForTheDate()).isTrue();
-                quizPageVisited = true;
+                assertThat(getDriver().getCurrentUrl()).isEqualTo(quizPage.getUrl());
+                assertThat(quizPage.getActualTitle()).isEqualTo(quizPage.getExpectedTitle());
                 getDriver().close();
             }
         }
-        assertThat(quizPageVisited)
-              .as("Quiz page was opened in a new tab and checked for title correctness").isTrue();
     }
 }
