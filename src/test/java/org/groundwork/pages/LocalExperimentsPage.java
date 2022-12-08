@@ -3,13 +3,14 @@ package org.groundwork.pages;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.io.File;
 import java.util.List;
+import static org.groundwork.support.TestContext.getExperimentsUrl;
 
 public class LocalExperimentsPage extends ExperimentsBasePage {
 
     public LocalExperimentsPage() {
-        super();
-        url = "file://" + System.getProperty("user.dir") + "/src/test/resources/html/elements_for_experiments.html";
+        url = getExperimentsUrl() + File.separator + "elements_for_experiments.html";
     }
 
     @FindBy(css=".experiment")

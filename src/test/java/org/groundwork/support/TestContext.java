@@ -164,4 +164,12 @@ public class TestContext {
         }
     }
 
+    public static String getExperimentsUrl() {
+        if (getConfig().getEnvironment().equals("local")) {
+            return "http://localhost:8889";
+        }
+        // selenoid's browser configurations in browsers.json (on linux ~/.aerokube/selenoid/browsers.json)
+        // should have "hosts" : ["host.docker.internal:host-gateway"] added
+        return "http://host.docker.internal:8889";
+    }
 }
