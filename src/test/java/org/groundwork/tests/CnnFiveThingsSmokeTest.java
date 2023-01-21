@@ -21,9 +21,9 @@ public class CnnFiveThingsSmokeTest extends BaseTest {
         fiveThingsPage.open();
         LocalDate articleDate = fiveThingsPage.dateOfArticle(1);
         if (todayIsSaturday()) {
-            assertThat(articleDate).isEqualTo(LocalDate.now().minusDays(1));
+            assertThat(articleDate).isEqualTo(now().minusDays(1));
         } else {
-            assertThat(articleDate).isEqualTo(LocalDate.now());
+            assertThat(articleDate).isEqualTo(now());
         }
     }
 

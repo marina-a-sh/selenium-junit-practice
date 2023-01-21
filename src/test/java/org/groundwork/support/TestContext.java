@@ -17,7 +17,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
-
+import static org.groundwork.support.DateHelper.nowWithTime;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -138,7 +138,7 @@ public class TestContext {
             capabilities.setPlatform(Platform.ANY);
             capabilities.setCapability("enableVNC",true); // Selenoid supports showing browser screen during test execution.
             capabilities.setCapability("enableVideo",true); // To enable video recording for session
-//            capabilities.setCapability("videoName","selenoid-video.mp4"); // To enable video recording for session
+            capabilities.setCapability("videoName","selenoid-video-"+ nowWithTime()+".mp4"); // To enable video recording for session
             capabilities.setCapability("enableLog",true); // To enable saving logs for a session
             switch (browser) {
                 case "chrome":
