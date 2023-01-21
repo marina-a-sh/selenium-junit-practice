@@ -168,10 +168,10 @@ public class TestContext {
         if (getConfig().getEnvironment().equals("local")) {
             return "http://localhost:8889";
         }
-        // running from dockerized jenkins (container name: "jenkinsci")
-        // jenkinsci container should be added to docker bridge network (default: "selenoid") with selenoid and browsers
+        // running from Jenkins' dockerized agent on the 'selenoid' bridge network with alias 'agent'
+        // selenoid and browsers by default are also connected to the docker's 'selenoid' bridge network
         if (!getConfig().getHub().contains("localhost")) {
-            return "http://jenkinsci:8889";
+            return "http://agent:8889";
         }
         // running from IDE, containerized browser should reach localhost:8889 of the host
         // selenoid's browser configurations in browsers.json should have added

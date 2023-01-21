@@ -1,7 +1,8 @@
-browser: chrome      # chrome, firefox, safari, edge, ei
+browser: chrome     # chrome, firefox, safari, edge, ei
 environment: grid   # local, grid
-#hub: http://localhost:4444/wd/hub
-hub: http://host.docker.internal:4444/wd/hub
+#hub: http://localhost:4444/wd/hub  # reaching grid locally
+#hub: http://host.docker.internal:4444/wd/hub  # reaching grid from docker container through host
+hub: http://selenoid:4444/wd/hub # reaching grid on the docker's bridge network
 headless: false
 #browserWidth: 1920
 #browserHeight: 1080
