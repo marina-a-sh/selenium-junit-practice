@@ -7,10 +7,12 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -84,11 +86,10 @@ public class TestContext {
                     chromePreferences.put("credentials_enable_service", false);
                     chromePreferences.put("password_manager_enabled", false);
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--silent");
                     chromeOptions.addArguments("--start-maximized");
                     chromeOptions.setExperimentalOption("prefs", chromePreferences);
 
-//                    System.setProperty("webdriver.chrome.logfile", System.getProperty("user.dir") + "/src/test/resources/chromedriver.log");
+                    System.setProperty("webdriver.chrome.logfile", System.getProperty("user.dir") + "/target/chromedriver.log");
 //                    System.setProperty("webdriver.chrome.verboseLogging", "true"); // DEBUG
 //                    System.setProperty("webdriver.chrome.silentOutput", "true"); // OFF
 //                    System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true"); // OFF
@@ -110,6 +111,7 @@ public class TestContext {
                         firefoxBinary.addCommandLineOptions("--headless");
                         firefoxOptions.setBinary(firefoxBinary);
                     }
+//                    firefoxOptions.setLogLevel(FirefoxDriverLogLevel.DEBUG);
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case "safari":
