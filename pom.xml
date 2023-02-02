@@ -68,6 +68,31 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>purge</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <configuration>
+              <excludeDefaultDirectories>true</excludeDefaultDirectories>
+              <filesets>
+                <fileset>
+                  <directory>target/</directory>
+                  <followSymlinks>false</followSymlinks>
+                  <includes>
+                    <include>**/*</include>
+                  </includes>
+                </fileset>
+              </filesets>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <reporting> <!--Reporting plugins are executed during the site generation or run as standalone goal via CLI-->
     <!--The Surefire Report Plugin parses the generated TEST-*.xml files under ${basedir}/target/surefire-reports
         and renders them using DOXIA, which creates the web interface version of the test results.-->
