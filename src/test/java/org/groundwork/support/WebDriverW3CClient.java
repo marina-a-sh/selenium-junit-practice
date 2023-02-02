@@ -20,8 +20,9 @@ public class WebDriverW3CClient {
             if (System.getProperty("os.name").toLowerCase().contains("linux")) {
                 try {
                     Process p = Runtime.getRuntime().exec(new String[]{"bash", "-c", "netstat -plnt |" +
-                            " grep -E 'chromedriver|geckodriver' |" +
-                            " grep 'LISTEN' | grep 'tcp ' | tr -s ' ' | cut -d' ' -f4 | cut -d':' -f2"});
+                            " grep -E 'chromedr|geckodr' |" +
+                            " grep 'LISTEN' | grep 'tcp' | head -n 1 | tr -s ' ' |" +
+                            " cut -d' ' -f4 | rev | cut -d':' -f1 | rev "});
                     p.waitFor();
                     BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
                     return "http://localhost:" + in.readLine();
