@@ -104,7 +104,6 @@
       <plugin> <!--site phase-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.22.2</version>
         <configuration>
           <outputName>groundwork-practice-test-report</outputName>
         </configuration>
@@ -114,7 +113,6 @@
             After 'mvn site' see Failure Details section -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>3.1.1</version>
       </plugin>
     </plugins>
   </reporting>
@@ -137,45 +135,9 @@
 <!--  A plugin is an artifact that you can configure in your project to have it actually do something
       during the build of your project (i.e to start and stop server for tests running). Plugin may need
       its own dependencies. -->
-      <plugin> <!--before and after test phase: process-test-classes and prepare-package-->
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>11.0.12</version>
-        <!--https://www.eclipse.org/jetty/documentation/jetty-11/programming-guide/index.html-->
-        <configuration>
-          <supportedPackagings>jar</supportedPackagings>
-          <webAppSourceDirectory>${basedir}/src/test/resources/html</webAppSourceDirectory>
-          <stopKey>foo</stopKey>
-          <stopPort>9999</stopPort>
-          <stopWait>2</stopWait>
-          <webApp>
-            <contextPath>/</contextPath>
-          </webApp>
-          <httpConnector>
-            <port>8889</port>
-          </httpConnector>
-        </configuration>
-        <executions>
-          <execution>
-            <id>start-jetty</id>
-            <phase>process-test-classes</phase>
-            <goals>
-              <goal>start</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>stop-jetty</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>stop</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin> <!--test phase-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
         <configuration>
           <testFailureIgnore>false</testFailureIgnore>
           <argLine>
@@ -203,18 +165,53 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin> <!--test phase-->
-        <groupId>io.qameta.allure</groupId>
-        <artifactId>allure-maven</artifactId>
-        <version>2.10.0</version>
+      <!-- https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Packaging
+           If more than one goal is bound to a particular phase, the order used is that those from the packaging
+           (default <packaging> is jar) are executed first, followed by those configured in the POM. -->
+      <plugin> <!--process-test-classes phase (before test) and last one in test phase based on order in this POM-->
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <!--https://www.eclipse.org/jetty/documentation/jetty-11/programming-guide/index.html-->
         <configuration>
-          <reportVersion>2.14.0</reportVersion>
+          <supportedPackagings>jar</supportedPackagings>
+          <webAppSourceDirectory>${basedir}/src/test/resources/html</webAppSourceDirectory>
+          <stopKey>foo</stopKey>
+          <stopPort>9999</stopPort>
+          <stopWait>2</stopWait>
+          <webApp>
+            <contextPath>/</contextPath>
+          </webApp>
+          <httpConnector>
+            <port>8889</port>
+          </httpConnector>
         </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin> <!--package phase-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.2</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.groundwork.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -238,7 +235,6 @@
             https://www.javaguides.net/2018/06/apache-maven-assembly-plugin.html-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.4.2</version>
         <configuration>
           <archive>
             <manifest>
@@ -268,7 +264,6 @@
       <plugin> <!--site phase, need reports of test runs even if there are test failures-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.3.0</version>
         <executions>
           <execution>
             <id>unpack</id>
@@ -299,7 +294,6 @@
       <plugin> <!--site phase-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.1.0</version>
         <!--It is not the intention of this plugin to provide a means of polluting the POM, so it's encouraged
         to move all your Ant tasks to a build.xml file and just call it from the POM using Ant's <ant/> task.
         One of the main purposes of this plugin is to facilitate the migration from Ant based projects to Maven.-->
@@ -314,6 +308,7 @@
             <configuration>
               <target>
                 <mkdir dir="${basedir}/target/junitreport" />
+                <mkdir dir="${basedir}/target/artifacts" />
                 <copy todir="${basedir}/target/junitreport/">
                   <fileset dir="${basedir}/target/artifacts/">
                     <include name="**/*.png"/>
@@ -331,7 +326,7 @@
                   </fileset>
                   <!--junit-frames.xsl in project folder extends target/junit-frames-base.xsl with links to screenshots-->
                   <!--expected screenshot location example: junitreport/org/groundwork/tests/ElementsStatsTest/testStats.png-->
-                  <report styledir="${basedir}" format="frames" todir="${basedir}/target/junitreport"/>
+                  <report styledir="${basedir}/src/test/resources" format="frames" todir="${basedir}/target/junitreport"/>
                 </junitreport>
               </target>
             </configuration>
@@ -377,13 +372,85 @@
       <plugin> <!--site phase-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.10.0</version>
       </plugin>
       <plugin> <!--site phase-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.2.1</version>
+      </plugin>
+      <plugin> <!--no phase-->
+        <!-- https://github.com/allure-framework/allure-maven
+             mvn allure:report Report will be generated tо directory: target/site/allure-maven/index.html -->
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
       </plugin>
     </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <version>2.22.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jxr-plugin</artifactId>
+          <version>3.1.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.22.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <version>11.0.12</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.4.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.10.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>3.2.1</version>
+        </plugin>
+        <plugin>
+          <groupId>io.qameta.allure</groupId>
+          <artifactId>allure-maven</artifactId>
+          <version>2.10.0</version>
+          <configuration>
+            <reportVersion>2.14.0</reportVersion>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>

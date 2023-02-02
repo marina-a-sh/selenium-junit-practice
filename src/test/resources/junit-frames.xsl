@@ -3,7 +3,7 @@
     <!-- import the default junit-frames.xsl stylesheet
          maven-dependency-plugin unpacks this default stylesheet from ant-optional-1.5.3-1.jar,
          renames it and puts into target folder-->
-    <xsl:import href="target/junit-frames-base.xsl"/>
+    <xsl:import href="../../../target/junit-frames-base.xsl"/>
 
     <!-- override the template producing the test table header -->
     <xsl:template name="testcase.test.header">
@@ -83,10 +83,12 @@
                     <xsl:call-template name="path"><xsl:with-param name="path" select="../@package"/></xsl:call-template>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--location of ElementsStatsTest.html file is
-                            selenium-junit-practice/target/site/junitreport/org/groundwork/tests
+                    <!--location of index.html file is
+                            selenium-junit-practice/target/site/junitreport
+                        location of ElementsStatsTest.html file is
+                            selenium-junit-practice/target/junitreport/org/groundwork/tests
                         location of screenshot for test org.groundwork.tests.ElementsStatsTest#testStats
-                            selenium-junit-practice/target/site/junitreport/org/groundwork/tests/ElementsStatsTest/testStats.png
+                            selenium-junit-practice/target/junitreport/org/groundwork/tests/ElementsStatsTest/testStats.png
                         link to screenshot in ElementsStatsTest.html is the relative path
                             ../../../org/groundwork/tests/ElementsStatsTest/testStats.png-->
                     <xsl:when test="failure">
