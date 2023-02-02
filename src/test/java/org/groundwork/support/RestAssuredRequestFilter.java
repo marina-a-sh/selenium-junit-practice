@@ -10,15 +10,14 @@ public class RestAssuredRequestFilter implements Filter, Loggable {
 
     @Override
     public Response filter(FilterableRequestSpecification requestSpec, FilterableResponseSpecification responseSpec, FilterContext filterContext) {
+        getLogger().info("Request method: " + requestSpec.getMethod() + "\n" +
+                "Request URI: " + requestSpec.getURI() + "\n" +
+                "Request Headers: " + requestSpec.getHeaders() + "\n" +
+                "Request Body: " + requestSpec.getBody());
         Response response = filterContext.next(requestSpec, responseSpec);
-        getLogger().info("\n" +
-                         "Request method: " + requestSpec.getMethod() + "\n" +
-                         "Request URI: " + requestSpec.getURI() + "\n" +
-                         "Request Headers: " + requestSpec.getHeaders() + "\n" +
-                         "Request Body: " + requestSpec.getBody() + "\n" +
-                         "Response Status: " + response.getStatusCode() + "\n" +
+        getLogger().info("Response Status: " + response.getStatusCode() + "\n" +
                          "Response Status Line: " + response.getStatusLine() + "\n" +
-                         "Response Body: " + response.getBody().asPrettyString() + "\n");
+                         "Response Body: " + response.getBody().asPrettyString());
         return response;
     }
 
