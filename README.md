@@ -12,24 +12,26 @@ to have a **foundational project**
 
 - **ElementsStatsTest**
    - Being initially confused and sidetracked by the facts that
-     1. in devtools Console JavaScript window.getComputedStyle method (which returns values of all CSS properties of an element) considers "invisible to human eye" zero height element to be visible, the reason being that it is just a [property](https://www.w3schools.com/jsref/prop_style_visibility.asp)<br>
+     1. in devtools Console JavaScript window.getComputedStyle method (which returns values of all CSS properties of an element) considers "invisible to human eye" zero height element to be visible<br>
         [![usps_repos_element_zero_height](img/usps_repos_element_zero_height-small.png)](img/usps_repos_element_zero_height.png)
         [![usps_repos_element_devtools_Console_JS_info](img/usps_repos_element_devtools_Console_JS_info-small.png)](img/usps_repos_element_devtools_Console_JS_info.png)
-        [![info_log_elements_stats](img/info_log_elements_stats-small.png)](img/info_log_elements_stats.png)
+        [![info_log_elements_stats](img/info_log_elements_stats-small.png)](img/info_log_elements_stats.png)<br>
+        Note: later realised that 'visibility' is just a [CSS property](https://www.w3schools.com/jsref/prop_style_visibility.asp) in that case
      2. [visibilityOfElementLocated](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html#visibilityOfElementLocated(org.openqa.selenium.By)) method in Selenium's ExpectedConditions class states that "Visibility means that the element is not only displayed but also has a height and width that is greater than 0"
      3. W3C's WebDriver recommended approach to [element's displayedness](https://www.w3.org/TR/webdriver1/#element-displayedness) is that it does not relate to the visibility or display style properties and element should in general be considered visible if any part of it is drawn on the canvas within the boundaries of the viewport
 
-     wanted to have an empirical way to go through a checklist for a custom element running Selenium methods such as: isDisplayed, visibilityOf, isEnabled, isClickable, click by WebElement's method, click by Actions' method.
-      Custom elements are specified in an html page which is served by Jetty server.<br>
+     wanted to have an empirical way to go through a checklist for a custom element running Selenium methods such as: isDisplayed, visibilityOf, isEnabled, isClickable, click by WebElement's method, click by Actions' method.<br>
+     Note: Custom elements are specified in an html page which is served by Jetty server.<br>
 
 
 - **WebDriverW3CClientTest**
-   - Used RestAssured library to do API requests specified by ['WebDriver W3C' protocol](https://www.w3.org/TR/webdriver1) to compare direct protocol use and results returned by Selenium library implementation of [WebElement interface](https://www.javadoc.io/doc/org.seleniumhq.selenium/selenium-api/4.6.0/org/openqa/selenium/WebElement.html). Interesting differences in case of decimal values for [location and size](https://www.w3.org/TR/webdriver1/#get-element-rect) measurements of elements.<br>
-     Test class is parameterized using element locators. Class parameterization is JUnit4 feature, while JUnit 5 also allows method parameterization.
+   - Used RestAssured library to do API requests specified by ['WebDriver W3C' protocol](https://www.w3.org/TR/webdriver1) to compare direct protocol use and results returned by Selenium library implementation of [WebElement interface](https://www.javadoc.io/doc/org.seleniumhq.selenium/selenium-api/4.6.0/org/openqa/selenium/WebElement.html). Found interesting differences in case of decimal values for [location and size](https://www.w3.org/TR/webdriver1/#get-element-rect) measurements of elements.<br>
+     TO DO: This test class is parameterized using element locators. Parameterization at class level is JUnit4 feature, while switching to JUnit 5 will introduce [more flexible parameterization](https://stackoverflow.com/questions/46182118/junit5-parameterized-tests-at-class-level) at method level.
 
 
 - **CnnFiveThingsSmokeTest**
-   - Stumbled upon CNN's "5 Things Weekly News Quiz" and thought that having tests going to the CNN's site will promote news reading and being more informed. Was surprised to discover that CNN's 5-things page has long page load time (time to JS 'onload' event, for which Selenium waits up to PageLoadTimeout units), on average 40+ sec. Test checks link to quiz in Sunday post. TO DO: Prevent failures at night due to article upload happening between 4am and 5am Eastern time.<br>
+   - Stumbled upon CNN's "5 Things Weekly News Quiz" and thought that having tests going to the CNN's site will promote news reading and being more informed. Was surprised to discover that CNN's 5-things page has long page load time (time to JS 'onload' event, for which Selenium waits up to PageLoadTimeout units), on average 40+ sec. Test checks link to quiz in Sunday post.<br>
+    TO DO: Prevent failures at night due to article upload happening between 4am and 5am Eastern time.<br>
     [![cnn_5things_onload_event_timing](img/cnn_5things_onload_event_timing-small.png)](img/cnn_5things_onload_event_timing.png) 
 
 ## Operational use cases and their specificities
