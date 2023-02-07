@@ -67,6 +67,25 @@ with browsers provided by dockerized Selenoid**
       mvn site -DskipTests allure:report
       ```
     - Find allure report in target/site/allure-maven-plugin, right click on index.html > Open in > Browser > Chrome
+      - Note: If command line application Allure is installed from https://docs.qameta.io/allure/, same report can be generated without maven:
+        ```
+        # in terminal from project directory after running tests
+        allure generate target/allure-results/
+        # Report successfully generated to allure-report
+        ```
+        open generated html page with
+        ```
+        # in terminal from project directory
+        allure serve target/allure-report
+        # in Terminal Press <Ctrl+C> to exit
+        ```
+        to see historic trend (https://stackoverflow.com/questions/50376630/allure-reports-to-see-historic-trends):<br>
+        Before generating the report, copy the history folder from your previous allure-report folder inside your current allure-results folder.
     - Find surefire report by opening target/site/index.html and on the left sidebar click Project Reports > Surefire Report
+      - Note: to get only surefire report (without rerunning tests)
+        ```
+        mvn surefire-report:report-only
+        # see target/site/surefire-report.html
+        ```
     - Find junitreport by opening target/junitreport/index.html
     - Find *.mp4 videos recorded by selenoid on localhost:8080 'VIDEOS' link or in [full_local_path]/selenoid_conf/video folder
