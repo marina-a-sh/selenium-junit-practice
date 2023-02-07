@@ -31,6 +31,9 @@ public class LocalExperimentsPage extends ExperimentsBasePage {
     @FindBy(id="zero_height_no_text")
     WebElement zeroHeightNoText;
 
+    @FindBy(id="zero_height_zero_width")
+    WebElement zeroHeightZeroWidth;
+
     @Override
     public List<WebElement> getElementsForExperiments() {
         return elements_for_experiments;
@@ -46,6 +49,8 @@ public class LocalExperimentsPage extends ExperimentsBasePage {
         } else if (experiment.equals(zeroHeightNoText)) {
             return new boolean[]{false, true, false, false, false, false, false};
         } else if (experiment.equals(zeroHeightVert)) {
+            return new boolean[]{true, true, true, true, false, true, true};
+        } else if (experiment.equals(zeroHeightZeroWidth)) {
             return new boolean[]{true, true, true, true, false, true, true};
         }
         return new boolean[]{};
