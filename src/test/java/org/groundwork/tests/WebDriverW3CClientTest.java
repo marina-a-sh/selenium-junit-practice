@@ -47,7 +47,8 @@ public class WebDriverW3CClientTest extends BaseTest {
         uspsPage.open();
         Dimension libSize = uspsPage.getLangLinkDimension();
         WebDriverW3CClient client = new WebDriverW3CClient();
-        String[] w3cSize = client.getElementSizeViaW3C(client.findElementViaW3C(strategyAndSelector));
+        String elementId = client.findElementViaW3C(strategyAndSelector);
+        String[] w3cSize = client.getElementSizeViaW3C(elementId);
         assumeTrue("Element's width or height reported by specific webdriver via W3C protocol " +
                         "is a decimal value, similar to values shown by DevTools' Inspector tool",
                     !w3cSize[0].equals(String.valueOf(libSize.getWidth())) ||
