@@ -19,16 +19,20 @@ public class CnnFiveThingsPage extends BasePage {
         url = "https://www.cnn.com/specials/5-things";
     }
 
-    @FindBy(xpath="//ul[contains(@class,'list-large-horizontal')]/li")
+    @FindBy(xpath="//ul[contains(@class,'list-large-horizontal')]/li | " +               // if articles are shown in list
+                  "//div[contains(concat(' ', normalize-space(@class), ' '),'card ')]")  // if articles are shown in cards
     private List<WebElement> articles;
 
     private WebElement articleHeadline(WebElement article) {
-        return article.findElement(By.xpath(".//span[contains(@class,'headline-text')]"));
+        List<WebElement> headlines =
+                             article.findElements(By.xpath(".//span[contains(@class,'headline-text')] | " +
+                                                           ".//div[contains(@class,'headline')]"));
+        return headlines.get(0);
     }
 
     private String articleLink(WebElement article) {
-        return article.findElement(By.xpath(".//div[contains(@class,'content')]" +
-                                             "//a[contains(@href,'five-things')]")).getAttribute("href");
+        List<WebElement> links = article.findElements(By.xpath(".//a[contains(@href,'five-things')]"));
+        return links.get(0).getAttribute("href");
     }
 
     public int daysToRecentSundayFromTopArticleDate() {
