@@ -1,0 +1,19 @@
+selenium-junit-practice project
+Copyright 2022 Marina A. Shaposhnik
+
+TestContext.java with modifications
+contains code created by Viacheslav (Slava) Skryabin 04/01/2011
+MIT License
+Copyright (c) 2018 Viacheslav (Slava) Skryabin
+
+junit-frames.xsl with modifications
+contains parts of the original file from ant-optional library created by
+@author Stephane Bailliez <a href="mailto:sbailliez@apache.org"/>
+@author Erik Hatcher <a href="mailto:ehatcher@apache.org"/>
+The Apache Software License, Version 1.1
+Copyright (c) 2001-2002 The Apache Software Foundation. All rights reserved.
+
+See attribution.xml for information about a project's dependencies.
+
+See information about maven plugins in pom.xml and
+https://repo.maven.apache.org/maven2

@@ -1,0 +1,141 @@
+<attributionReport>
+   <!-- comment out 'test' scope for dependencies in pom.xml and run 'mvn attribution:generate-attribution-file' -->
+   <dependencies>
+      <dependency>
+         <name>allure-junit4</name>
+         <groupId>io.qameta.allure</groupId>
+         <artifactId>allure-junit4</artifactId>
+         <version>2.20.0</version>
+         <projectUrl>https://github.com/allure-framework/allure-java</projectUrl>
+         <type>jar</type>
+         <licenses>
+            <license>
+               <name>The Apache License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+         <downloadUrls>
+            <string>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-junit4/2.20.0/allure-junit4-2.20.0.jar</string>
+         </downloadUrls>
+      </dependency>
+      <dependency>
+         <name>Apache Log4j SLF4J Binding</name>
+         <groupId>org.apache.logging.log4j</groupId>
+         <artifactId>log4j-slf4j-impl</artifactId>
+         <version>2.19.0</version>
+         <projectUrl>https://logging.apache.org/log4j/2.x/log4j-slf4j-impl/</projectUrl>
+         <type>jar</type>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+         <downloadUrls>
+            <string>https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-slf4j-impl/2.19.0/log4j-slf4j-impl-2.19.0.jar</string>
+         </downloadUrls>
+      </dependency>
+      <dependency>
+         <name>AssertJ fluent assertions</name>
+         <groupId>org.assertj</groupId>
+         <artifactId>assertj-core</artifactId>
+         <version>3.23.1</version>
+         <projectUrl>${project.parent.url}#assertj-core</projectUrl>
+         <type>jar</type>
+         <licenses>
+            <license>
+               <name>Apache License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+         <downloadUrls>
+            <string>https://repo.maven.apache.org/maven2/org/assertj/assertj-core/3.23.1/assertj-core-3.23.1.jar</string>
+         </downloadUrls>
+      </dependency>
+      <dependency>
+         <name>Jackson-dataformat-YAML</name>
+         <groupId>com.fasterxml.jackson.dataformat</groupId>
+         <artifactId>jackson-dataformat-yaml</artifactId>
+         <version>2.14.0</version>
+         <projectUrl>https://github.com/FasterXML/jackson-dataformats-text</projectUrl>
+         <type>jar</type>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+         <downloadUrls>
+            <string>https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.14.0/jackson-dataformat-yaml-2.14.0.jar</string>
+         </downloadUrls>
+      </dependency>
+      <dependency>
+         <name>JUnit</name>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>4.13.2</version>
+         <projectUrl>http://junit.org</projectUrl>
+         <type>jar</type>
+         <licenses>
+            <license>
+               <name>Eclipse Public License 1.0</name>
+               <url>http://www.eclipse.org/legal/epl-v10.html</url>
+            </license>
+         </licenses>
+         <downloadUrls>
+            <string>https://repo.maven.apache.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar</string>
+         </downloadUrls>
+      </dependency>
+      <dependency>
+         <name>org.seleniumhq.selenium:selenium-java</name>
+         <groupId>org.seleniumhq.selenium</groupId>
+         <artifactId>selenium-java</artifactId>
+         <version>4.6.0</version>
+         <projectUrl>https://selenium.dev/</projectUrl>
+         <type>jar</type>
+         <licenses>
+            <license>
+               <name>The Apache Software License, Version 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            </license>
+         </licenses>
+         <downloadUrls>
+            <string>https://repo.maven.apache.org/maven2/org/seleniumhq/selenium/selenium-java/4.6.0/selenium-java-4.6.0.jar</string>
+         </downloadUrls>
+      </dependency>
+      <dependency>
+         <name>REST Assured</name>
+         <groupId>io.rest-assured</groupId>
+         <artifactId>rest-assured</artifactId>
+         <version>5.3.0</version>
+         <projectUrl>http://code.google.com/p/rest-assured</projectUrl>
+         <type>jar</type>
+         <licenses>
+            <license>
+               <name>Apache 2.0</name>
+               <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            </license>
+         </licenses>
+         <downloadUrls>
+            <string>https://repo.maven.apache.org/maven2/io/rest-assured/rest-assured/5.3.0/rest-assured-5.3.0.jar</string>
+         </downloadUrls>
+      </dependency>
+      <dependency>
+         <name>WebDriverManager</name>
+         <groupId>io.github.bonigarcia</groupId>
+         <artifactId>webdrivermanager</artifactId>
+         <version>5.3.1</version>
+         <projectUrl>https://bonigarcia.dev/webdrivermanager/</projectUrl>
+         <type>jar</type>
+         <licenses>
+            <license>
+               <name>Apache 2.0</name>
+               <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            </license>
+         </licenses>
+         <downloadUrls>
+            <string>https://repo.maven.apache.org/maven2/io/github/bonigarcia/webdrivermanager/5.3.1/webdrivermanager-5.3.1.jar</string>
+         </downloadUrls>
+      </dependency>
+   </dependencies>
+</attributionReport>
