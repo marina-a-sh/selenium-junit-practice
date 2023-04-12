@@ -14,6 +14,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.groundwork.support.TestContext.getDriver;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class ScreenshotOnFailRule implements TestRule, Loggable {
 
@@ -46,7 +47,7 @@ public class ScreenshotOnFailRule implements TestRule, Loggable {
                     if (directoryCreated) {
                         File dest = new File(dir + File.separator + description.getClassName()
                                                                      + "." + description.getMethodName() + ".png");
-                        Files.move(screenshot.toPath(), dest.toPath());
+                        Files.move(screenshot.toPath(), dest.toPath(), REPLACE_EXISTING);
                         getLogger().info("Saved screenshot to " + dest.getAbsolutePath());
                     } else {
                         getLogger().error("Directory for screenshots was not created: " + dir.getAbsolutePath());
