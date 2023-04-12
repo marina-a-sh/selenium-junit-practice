@@ -88,6 +88,7 @@ public class TestContext {
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--start-maximized");
                     chromeOptions.setExperimentalOption("prefs", chromePreferences);
+                    chromeOptions.addArguments("--remote-allow-origins=*");
 
                     System.setProperty("webdriver.chrome.logfile", System.getProperty("user.dir") + "/target/chromedriver.log");
 //                    System.setProperty("webdriver.chrome.verboseLogging", "true"); // DEBUG
