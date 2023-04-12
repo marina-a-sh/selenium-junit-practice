@@ -7,11 +7,7 @@
 
     <!-- override the template producing the test table header -->
     <xsl:template name="testcase.test.header">
-        <xsl:param name="show.class" select="''"/>
         <tr valign="top">
-            <xsl:if test="boolean($show.class)">
-                <th>Class</th>
-            </xsl:if>
             <th>Name</th>
             <th>Status</th>
             <th width="80%">Type</th>
@@ -19,13 +15,11 @@
 
             <!-- ADDED -->
             <th>Screenshot</th>
-
         </tr>
     </xsl:template>
 
     <!-- override the template producing a test table row -->
     <xsl:template match="testcase" mode="print.test">
-        <xsl:param name="show.class" select="''"/>
         <tr valign="top">
             <xsl:attribute name="class">
                 <xsl:choose>
@@ -34,23 +28,7 @@
                     <xsl:otherwise>TableRowColor</xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
-            <xsl:variable name="class.href">
-                <xsl:value-of select="concat(translate(../@package,'.','/'), '/', ../@id, '_', ../@name, '.html')"/>
-            </xsl:variable>
-            <xsl:if test="boolean($show.class)">
-                <td><a href="{$class.href}"><xsl:value-of select="../@name"/></a></td>
-            </xsl:if>
-            <td>
-                <a name="{@name}"/>
-                <xsl:choose>
-                    <xsl:when test="boolean($show.class)">
-                        <a href="{concat($class.href, '#', @name)}"><xsl:value-of select="@name"/></a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="@name"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </td>
+            <td><xsl:value-of select="@name"/></td>
             <xsl:choose>
                 <xsl:when test="failure">
                     <td>Failure</td>
@@ -71,36 +49,36 @@
                 </xsl:call-template>
             </td>
 
-<!-- Added screenshot link for failed tests https://stackoverflow.com/questions/1727616/custom-junit-report -->
+            <!-- Added screenshot link for failed and error tests  -->
             <td>
-                <!-- "org.groundwork.tests.ElementsStatsTest" -> "org/groundwork/tests/ElementsStatsTest" -->
-                <xsl:variable name="class.name">
-                    <xsl:value-of select="translate(@classname,'.','/')"/>
-                </xsl:variable>
-                <!-- "../@package" (= package attribute of testsuite element [testcase's parent])
-                     "org.groundwork.tests"  -> "../../../" -->
-                <xsl:variable name="junit.base">
-                    <xsl:call-template name="path"><xsl:with-param name="path" select="../@package"/></xsl:call-template>
+                <xsl:variable name="class_name">
+                    <xsl:call-template name="substring-after-last-dot">
+                        <xsl:with-param name="str" select="@classname"/>
+                    </xsl:call-template>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--location of index.html file is
-                            selenium-junit-practice/target/site/junitreport
-                        location of ElementsStatsTest.html file is
-                            selenium-junit-practice/target/junitreport/org/groundwork/tests
-                        location of screenshot for test org.groundwork.tests.ElementsStatsTest#testStats
-                            selenium-junit-practice/target/junitreport/org/groundwork/tests/ElementsStatsTest/testStats.png
-                        link to screenshot in ElementsStatsTest.html is the relative path
-                            ../../../org/groundwork/tests/ElementsStatsTest/testStats.png-->
                     <xsl:when test="failure">
-                        <a href="{concat($junit.base,$class.name,'/',@name,'.png')}"><xsl:value-of select="@name"/></a>
+                        <a href="{concat($class_name,'/',@name,'.png')}"><xsl:value-of select="@name"/></a>
                     </xsl:when>
                     <xsl:when test="error">
-                        <a href="{concat($junit.base,$class.name,'/',@name,'.png')}"><xsl:value-of select="@name"/></a>
+                        <a href="{concat($class_name,'/',@name,'.png')}"><xsl:value-of select="@name"/></a>
                     </xsl:when>
                 </xsl:choose>
             </td>
 
         </tr>
+    </xsl:template>
+
+    <xsl:template name="substring-after-last-dot">
+        <xsl:param name="str"/>
+        <xsl:if test="contains($str,'.')">
+            <xsl:call-template name="substring-after-last-dot">
+                <xsl:with-param name="str" select="substring-after($str,'.')"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test="not(contains($str,'.'))">
+            <xsl:value-of select="$str"/>
+        </xsl:if>
     </xsl:template>
 
 </xsl:stylesheet>
