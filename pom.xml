@@ -387,6 +387,22 @@
         <groupId>io.qameta.allure</groupId>
         <artifactId>allure-maven</artifactId>
       </plugin>
+      <plugin>
+        <groupId>com.github.jinnovations</groupId>
+        <artifactId>attribution-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate-attribution-file</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <outputFile>${basedir}/target/attribution.xml</outputFile>
+          <includeTransitiveDependencies>false</includeTransitiveDependencies>
+        </configuration>
+      </plugin>
     </plugins>
 
     <pluginManagement>
@@ -453,6 +469,11 @@
           <configuration>
             <reportVersion>2.14.0</reportVersion>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>com.github.jinnovations</groupId>
+          <artifactId>attribution-maven-plugin</artifactId>
+          <version>0.9.9</version>
         </plugin>
       </plugins>
     </pluginManagement>
