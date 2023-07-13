@@ -33,6 +33,7 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverLogLevel;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -40,10 +41,12 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.GeckoDriverService;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.service.DriverService;
 import org.openqa.selenium.safari.SafariDriver;
 import static org.groundwork.support.DateHelper.nowWithTime;
 import java.io.IOException;
@@ -115,11 +118,10 @@ public class TestContext {
                     chromeOptions.addArguments("--start-maximized");
                     chromeOptions.setExperimentalOption("prefs", chromePreferences);
                     chromeOptions.addArguments("--remote-allow-origins=*");
-
-                    System.setProperty("webdriver.chrome.logfile", System.getProperty("user.dir") + "/target/chromedriver.log");
-//                    System.setProperty("webdriver.chrome.verboseLogging", "true"); // DEBUG
-//                    System.setProperty("webdriver.chrome.silentOutput", "true"); // OFF
-//                    System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true"); // OFF
+                    System.setProperty(ChromeDriverService.CHROME_DRIVER_LOG_PROPERTY,
+                                                           System.getProperty("user.dir") + "/target/chromedriver.log");
+//                                                           DriverService.LOG_STDOUT);
+//                    chromeOptions.setLogLevel(ChromeDriverLogLevel.DEBUG);
 
                     if (isHeadless) {
                         chromeOptions.setHeadless(true);
@@ -138,6 +140,9 @@ public class TestContext {
                         firefoxBinary.addCommandLineOptions("--headless");
                         firefoxOptions.setBinary(firefoxBinary);
                     }
+                    System.setProperty(GeckoDriverService.GECKO_DRIVER_LOG_PROPERTY,
+                                                          System.getProperty("user.dir") + "/target/geckodriver.log");
+//                                                          DriverService.LOG_STDOUT);
 //                    firefoxOptions.setLogLevel(FirefoxDriverLogLevel.DEBUG);
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
