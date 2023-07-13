@@ -117,7 +117,6 @@ public class TestContext {
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--start-maximized");
                     chromeOptions.setExperimentalOption("prefs", chromePreferences);
-                    chromeOptions.addArguments("--remote-allow-origins=*");
                     System.setProperty(ChromeDriverService.CHROME_DRIVER_LOG_PROPERTY,
                                                            System.getProperty("user.dir") + "/target/chromedriver.log");
 //                                                           DriverService.LOG_STDOUT);
