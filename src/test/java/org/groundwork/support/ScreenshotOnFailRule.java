@@ -46,7 +46,7 @@ public class ScreenshotOnFailRule implements TestRule, Loggable {
                     boolean directoryCreated = dir.isDirectory() || dir.mkdir();
                     if (directoryCreated) {
                         File dest = new File(dir + File.separator + description.getClassName()
-                                                                     + "." + description.getMethodName() + ".png");
+                             + "." + description.getMethodName().replaceAll("[\\[:\\]]","-") + ".png");
                         Files.move(screenshot.toPath(), dest.toPath(), REPLACE_EXISTING);
                         getLogger().info("Saved screenshot to " + dest.getAbsolutePath());
                     } else {

@@ -126,12 +126,13 @@
                         <xsl:with-param name="str" select="@classname"/>
                     </xsl:call-template>
                 </xsl:variable>
+                <xsl:variable name="new_name" select="concat(translate(@name,'[:]','---'),'.png')" />
                 <xsl:choose>
                     <xsl:when test="failure">
-                        <a href="{concat($class_name,'/',@name,'.png')}"><xsl:value-of select="@name"/></a>
+                        <a href="{concat($class_name,'/',$new_name)}"><xsl:value-of select="$new_name"/></a>
                     </xsl:when>
                     <xsl:when test="error">
-                        <a href="{concat($class_name,'/',@name,'.png')}"><xsl:value-of select="@name"/></a>
+                        <a href="{concat($class_name,'/',$new_name)}"><xsl:value-of select="$new_name"/></a>
                     </xsl:when>
                 </xsl:choose>
             </td>
