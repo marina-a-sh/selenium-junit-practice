@@ -169,13 +169,15 @@ public class TestContext {
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setBrowserName(browser);
             capabilities.setPlatform(Platform.ANY);
-            capabilities.setCapability("enableVNC",true); // Selenoid supports showing browser screen during test execution.
-            capabilities.setCapability("enableVideo",true); // To enable video recording for session
-            capabilities.setCapability("videoName","selenoid-video-"+ nowWithTime()+".mp4"); // To enable video recording for session
-            capabilities.setCapability("enableLog",true); // To enable saving logs for a session
             switch (browser) {
                 case "chrome":
                     ChromeOptions chromeOptions = new ChromeOptions();
+                    Map<String, Object> prefs = new HashMap<>();
+                    prefs.put("enableVNC",true); // Selenoid supports showing browser screen during test execution.
+                    prefs.put("enableVideo",true); // To enable video recording for session
+                    prefs.put("videoName","selenoid-video-"+ nowWithTime()+".mp4");
+                    prefs.put("enableLog",true); // To enable saving logs for a session
+                    capabilities.setCapability("selenoid:options", prefs);
                     chromeOptions.addArguments("--start-maximized");
                     capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                     break;
