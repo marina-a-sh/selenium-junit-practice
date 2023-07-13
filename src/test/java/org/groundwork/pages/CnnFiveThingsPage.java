@@ -31,7 +31,8 @@ public class CnnFiveThingsPage extends BasePage {
     }
 
     private String articleLink(WebElement article) {
-        List<WebElement> links = article.findElements(By.xpath(".//a[contains(@href,'five-things')]"));
+        List<WebElement> links = article.findElements(By.xpath(".//a[contains(@href,'five-things')" +
+                                                               " or contains(@href,'5-things')]"));
         return links.get(0).getAttribute("href");
     }
 
