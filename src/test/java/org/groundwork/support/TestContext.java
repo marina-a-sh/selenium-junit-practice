@@ -124,7 +124,7 @@ public class TestContext {
 //                    chromeOptions.setLogLevel(ChromeDriverLogLevel.DEBUG);
 
                     if (isHeadless) {
-                        chromeOptions.setHeadless(true);
+                        chromeOptions.addArguments("--headless=new");
                         chromeOptions.addArguments("--window-size=" + size.getWidth() + "," + size.getWidth());
                         chromeOptions.addArguments("--disable-gpu");
                         chromeOptions.addArguments("--no-sandbox");
