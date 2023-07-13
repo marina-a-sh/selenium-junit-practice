@@ -29,7 +29,6 @@ package org.groundwork.support;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -43,7 +42,6 @@ import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.GeckoDriverService;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.service.DriverService;
@@ -166,29 +164,28 @@ public class TestContext {
                 driver.manage().window().maximize();
             }
         } else if (testEnv.equals("grid")){
-            DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setBrowserName(browser);
-            capabilities.setPlatform(Platform.ANY);
-            switch (browser) {
-                case "chrome":
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    Map<String, Object> prefs = new HashMap<>();
-                    prefs.put("enableVNC",true); // Selenoid supports showing browser screen during test execution.
-                    prefs.put("enableVideo",true); // To enable video recording for session
-                    prefs.put("videoName","selenoid-video-"+ nowWithTime()+".mp4");
-                    prefs.put("enableLog",true); // To enable saving logs for a session
-                    capabilities.setCapability("selenoid:options", prefs);
-                    chromeOptions.addArguments("--start-maximized");
-                    capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-                    break;
-                case "firefox":
-                    break;
-                default:
-                    throw new RuntimeException("Driver is not implemented for: " + browser);
-            }
             try {
                 URL hubUrl = new URL(getConfig().getHub());
-                driver = new RemoteWebDriver(hubUrl, capabilities);
+                Map<String, Object> prefs = new HashMap<>();
+                prefs.put("enableVNC",true); // Selenoid supports showing browser screen during test execution.
+                prefs.put("enableVideo",true); // To enable video recording for session
+                prefs.put("videoName","selenoid-video-"+ nowWithTime()+".mp4");
+                prefs.put("enableLog",true); // To enable saving logs for a session
+                switch (browser) {
+                    case "chrome":
+                        ChromeOptions chromeOptions = new ChromeOptions();
+                        chromeOptions.setCapability("selenoid:options", prefs);
+                        chromeOptions.addArguments("--start-maximized");
+                        driver = new RemoteWebDriver(hubUrl, chromeOptions);
+                        break;
+                    case "firefox":
+                        FirefoxOptions firefoxOptions = new FirefoxOptions();
+                        firefoxOptions.setCapability("selenoid:options", prefs);
+                        driver = new RemoteWebDriver(hubUrl, firefoxOptions);
+                        break;
+                    default:
+                        throw new RuntimeException("Driver is not implemented for: " + browser);
+                }
                 driver.manage().window().maximize();
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
             } catch (MalformedURLException e) {
