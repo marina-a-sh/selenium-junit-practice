@@ -13,10 +13,12 @@ when Jenkins, Jenkins's agent, Selenoid and browsers are all on the same docker 
       ```
     - download the latest configuration manager for Selenoid at https://aerokube.com/cm/latest/
       ```
-      cm_linux_amd64 selenoid start --last-versions 1
-      cm_linux_amd64 selenoid stop
+      cd [download_directory]
+      ./cm_linux_amd64 selenoid start --last-versions 1
+      ./cm_linux_amd64 selenoid stop
+      # create folder to store configuration and where logs and videos owned by 'root' will be written
       mkdir --parents [full_local_path]/selenoid_conf
-      cp .aerokube/selenoid/browsers.json [full_local_path]/selenoid_conf
+      cp ~/.aerokube/selenoid/browsers.json [full_local_path]/selenoid_conf
       vim [full_local_path]/selenoid_conf/browsers.json
       ```
     - change configuration to mount /dev/shm of the host to the container with Chrome to prevent [crash](https://github.com/markhobson/docker-maven-chrome#chrome-crashes)
@@ -38,8 +40,8 @@ when Jenkins, Jenkins's agent, Selenoid and browsers are all on the same docker 
       ```
     - start selenoid, selenoid-ui, and jenkinsci containers
       ```
-      cm_linux_amd64 selenoid start --config-dir [full_local_path]/selenoid_conf --browsers-json [full_local_path]/selenoid_conf/browsers.json --vnc
-      cm_linux_amd64 selenoid-ui start
+      ./cm_linux_amd64 selenoid start --config-dir [full_local_path]/selenoid_conf --browsers-json [full_local_path]/selenoid_conf/browsers.json --vnc
+      ./cm_linux_amd64 selenoid-ui start
       docker volume create jenkins-data    
       
       # if starting out of order, you may create network manually, otherwise it will be created by selenoid
@@ -58,11 +60,14 @@ when Jenkins, Jenkins's agent, Selenoid and browsers are all on the same docker 
       # IMPORTANT For intial setup, to see Jenkins' admin user password printed in the terminal window skip '--detach' option, alternatively, launch terminal within container and read the password from file:
         docker exec -u root -it jenkinsci /bin/bash
         cat /var/jenkins_home/secrets/initialAdminPassword
+      # To see contents of the jenkins-data volume run the following on the host:
+      # docker pull busybox:latest
+      # docker run -it --rm -v jenkins-data:/vol busybox:latest ls -l /vol
       ```
     - configure Jenkins' agent based on the tutorial at https://www.jenkins.io/doc/book/using/using-agents/ <br>
       To run agent container use the following command:
       ```
-      docker run -d --rm --name=agent1 --network selenoid --network-alias agent -v [full_local_path_to_the_project]/selenium-junit-practice/:/qa -e "JENKINS_AGENT_SSH_PUBKEY=[your-public-key]" jenkins/ssh-agent:alpine
+      docker run -d --rm --name=agent1 --network selenoid --network-alias agent -v [full_local_path_to_the_project]/selenium-junit-practice/:/qa:ro -e "JENKINS_AGENT_SSH_PUBKEY=[your-public-key]" jenkins/ssh-agent:alpine
    
       # mount local directories and files to your container
       # -v [full_local_path_to_the_project]/selenium-junit-practice/:/qa:ro
@@ -71,6 +76,8 @@ when Jenkins, Jenkins's agent, Selenoid and browsers are all on the same docker 
       # -v /etc/localtime:/etc/localtime:ro
       # optionally mount external configuration file into the place of the project's configuration file
       # -v [full_path_on_the_host]/config.yml:/qa/src/test/resources/config.yml
+      # optionally mount host's local maven repository
+      # -v ~/.m2:/root/.m2
       ```
     - Manually except SSH Host Key of 'agent1' on Jenkins controller<br>
         - Dashboard > Manage Jenkins > Manage Nodes and Clouds > click 'agent1'
