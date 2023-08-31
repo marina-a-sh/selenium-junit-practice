@@ -32,7 +32,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverLogLevel;
+import org.openqa.selenium.chromium.ChromiumDriverLogLevel;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -118,7 +118,9 @@ public class TestContext {
                     System.setProperty(ChromeDriverService.CHROME_DRIVER_LOG_PROPERTY,
                                                            System.getProperty("user.dir") + "/target/chromedriver.log");
 //                                                           DriverService.LOG_STDOUT);
-//                    chromeOptions.setLogLevel(ChromeDriverLogLevel.DEBUG);
+                    ChromeDriverService.Builder builder = new ChromeDriverService.Builder();
+                    builder.withLogLevel(ChromiumDriverLogLevel.OFF);
+                    ChromeDriverService service = builder.build();
 
                     if (isHeadless) {
                         chromeOptions.addArguments("--headless=new");
@@ -127,7 +129,7 @@ public class TestContext {
                         chromeOptions.addArguments("--no-sandbox");
                         System.setProperty("webdriver.chrome.whitelistedIps", "");
                     }
-                    driver = new ChromeDriver(chromeOptions);
+                    driver = new ChromeDriver(service, chromeOptions);
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
