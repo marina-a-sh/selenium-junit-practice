@@ -27,7 +27,6 @@ SOFTWARE.
 package org.groundwork.support;
 
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -100,7 +99,6 @@ public class TestContext {
         if (testEnv.equals("local")) {
             switch (browser) {
                 case "chrome":
-                    WebDriverManager.chromedriver().setup();
                     Map<String, Object> chromePreferences = new HashMap<>();
                     chromePreferences.put("profile.default_content_settings.geolocation", 2);
                     chromePreferences.put("profile.default_content_settings.popups", 0);
@@ -132,7 +130,6 @@ public class TestContext {
                     driver = new ChromeDriver(service, chromeOptions);
                     break;
                 case "firefox":
-                    WebDriverManager.firefoxdriver().setup();
                     FirefoxOptions firefoxOptions = new FirefoxOptions();
                     if (isHeadless) {
                         FirefoxBinary firefoxBinary = new FirefoxBinary();
@@ -150,11 +147,9 @@ public class TestContext {
                     driver.manage().window().setPosition(position);
                     break;
                 case "edge":
-                    WebDriverManager.edgedriver().setup();
                     driver = new EdgeDriver();
                     break;
                 case "ie":
-                    WebDriverManager.iedriver().setup();
                     driver = new InternetExplorerDriver();
                     break;
                 default:
