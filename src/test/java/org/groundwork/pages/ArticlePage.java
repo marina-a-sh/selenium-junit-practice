@@ -21,7 +21,7 @@ public class ArticlePage extends BasePage {
     private String constructUrl(LocalDate date) {
         DateTimeFormatter dateFmt1 = DateTimeFormatter.ofPattern("yyyy/MM/dd", Locale.US);
         DateTimeFormatter dateFmt2 = DateTimeFormatter.ofPattern("MMMM-d", Locale.US);
-        return "https://www.cnn.com/" + dateFmt1.format(date) + "/us/five-things-"
+        return "https://www.cnn.com/" + dateFmt1.format(date) + "/us/5-things-"
                                       + dateFmt2.format(date).toLowerCase() + "-trnd/index.html";
     }
 
