@@ -43,15 +43,27 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.24.2</version>
+      <version>3.23.1</version> <!-- if version >= 3.24.0, reportportal does not receive any data -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.19.0</version>
-      <scope>test</scope>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.apache.logging.log4j</groupId>-->
+<!--      <artifactId>log4j-core</artifactId>-->
+<!--      <version>2.17.2</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.logging.log4j</groupId>-->
+<!--      <artifactId>log4j-api</artifactId>-->
+<!--      <version>2.17.1</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>com.epam.reportportal</groupId>-->
+<!--      <artifactId>logger-java-log4j</artifactId>-->
+<!--      <version>5.2.1</version> &lt;!&ndash; runtime dependency: log4j-core 2.17.2 &ndash;&gt;-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-junit4</artifactId>
@@ -64,6 +76,40 @@
       <version>5.3.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.epam.reportportal</groupId>
+      <artifactId>agent-java-junit</artifactId>
+      <version>5.2.1</version> <!-- runtime dependency: slf4j-api 2.0.7 -->
+      <!-- compile dependency: com.nordstrom.tools » junit-foundation 17.0.3
+      JUnit Foundation is a lightweight collection of JUnit watchers, interfaces, and static utility
+      classes that supplement and augment the functionality provided by the JUnit 4 API. -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.3.12</version> <!-- compile dependency: slf4j-api version 2.0.7 -->
+      <!--Please note that slf4j-api version 2.0.x and later use the ServiceLoader mechanism.
+         Earlier versions relied on the static binder mechanism which is no longer honored by slf4j-api.-->
+      <!-- https://howtodoinjava.com/logback/setting-up-slf4j/ -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.epam.reportportal</groupId>
+      <artifactId>logger-java-logback</artifactId>
+      <version>5.2.1</version>
+      <scope>test</scope>
+    </dependency>
+<!--    <dependency>-->
+<!--      &lt;!&ndash; Placement of this dependency in POM file allows the above logback to be chosen as SLF4J provider,-->
+<!--           while log4j can still be chosen if you comment out two above logback libraries.-->
+<!--           But then, class path contains SLF4J bindings targeting slf4j-api versions 1.7.x or earlier and-->
+<!--           bindings found at two locations are ignored."&ndash;&gt;-->
+<!--      <groupId>org.apache.logging.log4j</groupId>-->
+<!--      <artifactId>log4j-slf4j-impl</artifactId>-->
+<!--      <version>2.17.2</version> &lt;!&ndash; compile dependency: slf4j-api 1.7.25 &ndash;&gt;-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
   </dependencies>
 
   <profiles>
@@ -133,6 +179,43 @@
 <!--  A plugin is an artifact that you can configure in your project to have it actually do something
       during the build of your project (i.e to start and stop server for tests running). Plugin may need
       its own dependencies. -->
+      <plugin> <!--initialize phase for properties goal;
+                   site phase, need reports of test runs even if there are test failures-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution> <!-- for reportportal -->
+            <id>getClasspathFilenames</id>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>unpack</id>
+            <phase>site</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>ant</groupId>
+                  <artifactId>ant-optional</artifactId>
+                  <version>1.5.3-1</version>
+                  <outputDirectory>${basedir}/target</outputDirectory>
+                  <includes>org/apache/tools/ant/taskdefs/optional/junit/xsl/junit-frames.xsl</includes>
+                  <fileMappers>
+                    <org.codehaus.plexus.components.io.filemappers.RegExpFileMapper>
+                      <pattern>.*</pattern>
+                      <replacement>junit-frames-base.xsl</replacement>
+                    </org.codehaus.plexus.components.io.filemappers.RegExpFileMapper>
+                  </fileMappers>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin> <!--test phase-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -140,6 +223,7 @@
           <testFailureIgnore>false</testFailureIgnore>
           <argLine>
             -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+            -javaagent:${com.nordstrom.tools:junit-foundation:jar} <!-- for reportportal -->
           </argLine>
           <properties>
             <property>
@@ -259,36 +343,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin> <!--site phase, need reports of test runs even if there are test failures-->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack</id>
-            <phase>site</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>ant</groupId>
-                  <artifactId>ant-optional</artifactId>
-                  <version>1.5.3-1</version>
-                  <outputDirectory>${basedir}/target</outputDirectory>
-                  <includes>org/apache/tools/ant/taskdefs/optional/junit/xsl/junit-frames.xsl</includes>
-                  <fileMappers>
-                    <org.codehaus.plexus.components.io.filemappers.RegExpFileMapper>
-                      <pattern>.*</pattern>
-                      <replacement>junit-frames-base.xsl</replacement>
-                    </org.codehaus.plexus.components.io.filemappers.RegExpFileMapper>
-                  </fileMappers>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+
       <plugin> <!--site phase-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -400,6 +455,20 @@
         <configuration>
           <outputFile>${basedir}/target/attribution.xml</outputFile>
           <includeTransitiveDependencies>false</includeTransitiveDependencies>
+        </configuration>
+      </plugin>
+      <!--https://dzone.com/articles/solving-dependency-conflicts-in-maven
+          The library’s version whose node is nearest to the root in the dependency tree will be used.
+          If there are several versions of the same library, whose nodes are on the same level in the tree,
+          the first library version found is used. Dependencies in the POM file declared first will be chosen first.-->
+      <plugin>
+        <!-- mvn dependency:tree (to see chosen library version)
+             mvn enforcer:enforce (to find dependency convergence errors) -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.4.1</version>
+        <configuration>
+          <rules><dependencyConvergence/></rules>
         </configuration>
       </plugin>
     </plugins>

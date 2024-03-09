@@ -6,6 +6,10 @@ contains code created by Viacheslav (Slava) Skryabin 04/01/2011
 MIT License
 Copyright (c) 2018 Viacheslav (Slava) Skryabin
 
+logback.xml
+Apache-2.0 license
+https://github.com/reportportal/examples-java/tree/master/example-junit
+
 junit-frames.xsl with modifications
 contains parts of the original file from ant-optional library created by
 @author Stephane Bailliez <a href="mailto:sbailliez@apache.org"/>
